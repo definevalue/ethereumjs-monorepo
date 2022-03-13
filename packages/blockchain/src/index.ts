@@ -640,8 +640,7 @@ export default class Blockchain implements BlockchainInterface {
           // the same vote or not
           this._cliqueLatestVotes.push(latestVote)
           debug(
-            `[Block ${header.number}] New clique vote: ${signer} -> ${beneficiary} ${
-              nonce.equals(CLIQUE_NONCE_AUTH) ? 'AUTH' : 'DROP'
+            `[Block ${header.number}] New clique vote: ${signer} -> ${beneficiary} ${nonce.equals(CLIQUE_NONCE_AUTH) ? 'AUTH' : 'DROP'
             }`
           )
         }
@@ -797,7 +796,7 @@ export default class Blockchain implements BlockchainInterface {
   /**
    * Returns the latest header in the canonical chain.
    */
-  async getLatestHeader(): Promise<BlockHeader> {
+  async getCanonicalHeadHeader(): Promise<BlockHeader> {
     return await this.initAndLock<BlockHeader>(async () => {
       if (!this._headHeaderHash) {
         throw new Error('No head header set')
@@ -896,8 +895,8 @@ export default class Blockchain implements BlockchainInterface {
       const block =
         item instanceof BlockHeader
           ? new Block(item, undefined, undefined, {
-              common: item._common,
-            })
+            common: item._common,
+          })
           : item
       const isGenesis = block.isGenesis()
       const isHeader = item instanceof BlockHeader
@@ -1588,8 +1587,7 @@ export default class Blockchain implements BlockchainInterface {
     if (signerIndex === -1) {
       throw new Error('Signer not found')
     }
-    const { number } = await this.getLatestHeader()
-    //eslint-disable-next-line
-    return (number + BigInt(1)) % BigInt(signers.length) === BigInt(signerIndex)
+    const { number } = await this.getCanonicalHeadHeader()
+    return number.addn(1).mod(new BN(signers.length)).eqn(signerIndex)
   }
 }
