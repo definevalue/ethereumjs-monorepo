@@ -1,6 +1,5 @@
 import tape from 'tape'
 import { KECCAK256_RLP } from 'ethereumjs-util'
-import { SecureTrie as Trie } from 'merkle-patricia-tree'
 import Common, { Chain, Hardfork } from '@ethereumjs/common'
 import { DefaultStateManager } from '../../src/state'
 import VM from '../../src'
@@ -175,18 +174,6 @@ tape('VM -> hardforkByBlockNumber, hardforkByTD, state (deprecated), blockchain'
       )
     }
 
-    st.end()
-  })
-
-  t.test('should work with trie (state) provided', async (st) => {
-    const trie = new Trie()
-    const vm = new VM({ state: trie, activatePrecompiles: true })
-    await vm.init()
-    st.notDeepEqual(
-      (vm.stateManager as DefaultStateManager)._trie.root,
-      KECCAK256_RLP,
-      'it has different root'
-    )
     st.end()
   })
 

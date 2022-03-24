@@ -101,6 +101,7 @@ tape('VM.runCode: RunCodeOptions', (t) => {
 
     const runCodeArgs = {
       value: BigInt(-10),
+      gasLimit: BigInt(1000000),
     }
 
     try {
