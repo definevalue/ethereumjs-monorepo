@@ -21,12 +21,6 @@ tape('reorg tests', (t) => {
         },
         { common }
       )
-      const blockchain = new Blockchain({
-        validateBlocks: true,
-        validateConsensus: false,
-        common,
-        genesisBlock: genesis,
-      })
 
       const blocks_lowTD: Block[] = []
       const blocks_highTD: Block[] = []
@@ -60,7 +54,7 @@ tape('reorg tests', (t) => {
       t.ok(number_lowTD > number_highTD, 'low TD should have a lower TD than the reported high TD')
       t.ok(
         blocks_lowTD[blocks_lowTD.length - 1].header.number >
-          blocks_highTD[blocks_highTD.length - 1].header.number,
+        blocks_highTD[blocks_highTD.length - 1].header.number,
         'low TD block should have a higher number than high TD block'
       )
 
